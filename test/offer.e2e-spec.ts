@@ -68,9 +68,9 @@ describe('OfferController (e2e)', () => {
         .get('/offer')
         .expect(200)
         .expect((res) => {
-          expect(res.body).toHaveLength(2);
-          expect(res.body[1].name).toBe('Data Scientist');
-          expect(res.body[0].name).toBe('Software Engineer');
+          expect(res.body.data).toHaveLength(2);
+          expect(res.body.data[1].name).toBe('Data Scientist');
+          expect(res.body.data[0].name).toBe('Software Engineer');
         });
     });
 
@@ -81,8 +81,8 @@ describe('OfferController (e2e)', () => {
         .get('/offer?minSalary=100000')
         .expect(200)
         .expect((res) => {
-          expect(res.body).toHaveLength(1);
-          expect(res.body[0].name).toBe('Senior Developer');
+          expect(res.body.data).toHaveLength(1);
+          expect(res.body.data[0].name).toBe('Senior Developer');
         });
     });
 
@@ -93,8 +93,8 @@ describe('OfferController (e2e)', () => {
         .get('/offer?maxSalary=80000')
         .expect(200)
         .expect((res) => {
-          expect(res.body).toHaveLength(1);
-          expect(res.body[0].name).toBe('Junior Developer');
+          expect(res.body.data).toHaveLength(1);
+          expect(res.body.data[0].name).toBe('Junior Developer');
         });
     });
   });
