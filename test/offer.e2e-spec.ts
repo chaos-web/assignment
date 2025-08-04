@@ -58,7 +58,10 @@ describe('OfferController (e2e)', () => {
 
   describe('GET /offer', () => {
     it('should return empty array when no offers exist', () => {
-      return request(app.getHttpServer()).get('/offer').expect(200).expect([]);
+      return request(app.getHttpServer()).get('/offer').expect(200).expect({
+        data: [],
+        total: 0,
+      });
     });
 
     it('should return all offers when no filters are applied', async () => {
@@ -68,7 +71,7 @@ describe('OfferController (e2e)', () => {
         .get('/offer')
         .expect(200)
         .expect((res) => {
-          expect(res.body.data).toHaveLength(2);
+          expect(res.body.data).toHaveLength(4);
           expect(res.body.data[1].name).toBe('Data Scientist');
           expect(res.body.data[0].name).toBe('Software Engineer');
         });

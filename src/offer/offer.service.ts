@@ -22,6 +22,7 @@ export class OfferService {
   }
 
   async findAll(dto: FindOfferDto) {
+    const page = dto.page < 2 ? 1 : dto.page;
     const query: any = {};
     
     if (dto.search) {
@@ -46,8 +47,8 @@ export class OfferService {
       query.issuedAt = { $gte: dto.issuedFrom };
     }
     
-    const offers = await this.offerRepo.getAll(dto.page, query, undefined, { issuedAt: -1 });
-    const total = dto.page ===1 ? await this.offerRepo.count(query) : -1;
+    const offers = await this.offerRepo.getAll(page, query, undefined, { issuedAt: -1 });
+    const total = page ===1 ? await this.offerRepo.count(query) : 0;
     return {
       offers,
       total,
