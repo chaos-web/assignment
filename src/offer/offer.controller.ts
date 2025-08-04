@@ -10,17 +10,20 @@ import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { ServiceEventsRabbitAddress } from '../common.interface';
 import { IHarvesterData } from '../harvester/harvester.service';
 import { GetOfferResourceDto } from './dto/offer-resource.dto';
+import { OfferMapper } from './dto/offer.mapper';
 
 @ApiBearerAuth()
 @ApiTags('Offer')
 @Controller('offer')
 export class OfferController {
+  private readonly offerMapper = new OfferMapper();
   constructor(private readonly offerService: OfferService) {}
 
   @Get()
   @ApiOkResponse({ type: GetOfferResourceDto, isArray: true })
-  findAll(@Query() query: FindOfferDto) {
-    return this.offerService.findAll(query);
+  async findAll(@Query() query: FindOfferDto) {
+    const { offers, total } = await this.offerService.findAll(query);
+    return this.offerMapper.getOffers(offers, total);
   }
 
   @RabbitSubscribe({

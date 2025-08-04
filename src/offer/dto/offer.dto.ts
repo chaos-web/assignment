@@ -54,7 +54,7 @@ export class FindOfferDto  extends PaginationDto{
   @ApiProperty()
   @IsOptional()
   @IsString()
-  company: string;
+  search: string;
 
   @ApiProperty()
   @IsOptional()

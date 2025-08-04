@@ -23,7 +23,7 @@ export abstract class MongoRepo<T> {
     const queryBuilder = this.model.findById(id);
     if (select) queryBuilder.select(select);
     return queryBuilder.exec();
-  }
+  }  
   getAll(
     page: number,
     query?: FilterQuery<T>,

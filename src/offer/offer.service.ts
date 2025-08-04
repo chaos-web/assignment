@@ -21,11 +21,11 @@ export class OfferService {
     return this.offerRepo.OfferModel.insertMany(offerEntities);
   }
 
-  findAll(dto: FindOfferDto) {
+  async findAll(dto: FindOfferDto) {
     const query: any = {};
-
-    if (dto.company) {
-      query.company = dto.company;
+    
+    if (dto.search) {
+      query['$text'] = { $search: dto.search, $caseSensitive: false };
     }
 
     if (dto.location) {
@@ -45,7 +45,12 @@ export class OfferService {
     if (dto.issuedFrom) {
       query.issuedAt = { $gte: dto.issuedFrom };
     }
-
-    return this.offerRepo.getAll(dto.page, query, undefined, { issuedAt: -1 });
+    
+    const offers = await this.offerRepo.getAll(dto.page, query, undefined, { issuedAt: -1 });
+    const total = dto.page ===1 ? await this.offerRepo.count(query) : -1;
+    return {
+      offers,
+      total,
+    };
   }
 }
