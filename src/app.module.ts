@@ -4,9 +4,10 @@ import conf from "./utils/config";
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TerminusModule } from '@nestjs/terminus';
-import { HarvesterModule } from './harvester/harvester.module';
-import { OfferModule } from './offer/offer.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ComposerModule } from './composer/composer.module';
+import { OutboxModule } from './rabbit-outbox/outbox.module';
+import { SignalModule } from './signal/signal.module';
 
 @Module({
   imports: [
@@ -18,8 +19,9 @@ import { MongooseModule } from '@nestjs/mongoose';
     MongooseModule.forRoot(conf().database.url),
     TerminusModule.forRoot(),
     ScheduleModule.forRoot(),
-    HarvesterModule,
-    OfferModule,
+    ComposerModule,
+    OutboxModule,
+    SignalModule
   ],
   controllers: [AppController],
   providers: [],

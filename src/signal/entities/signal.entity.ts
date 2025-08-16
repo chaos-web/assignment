@@ -5,13 +5,11 @@ import { MongoRepo } from '../../utils/mongo.repository.helper';
 
 export enum State {
   FETCHED = 'fetched',
-  PARSED = 'parsed',
-  PUBLISHED = 'published',
   SAVED = 'saved',
-  FAILED = 'failed',
 }
 
-export type HarvesterLogDocument = HarvesterLog & Document;
+// Set collection to timeseries for better performance
+export type SignalDocument = Signal & Document;
 @Schema({
   timestamps: { createdAt: true , updatedAt: false },
   timeseries: {
@@ -21,39 +19,42 @@ export type HarvesterLogDocument = HarvesterLog & Document;
   },
   autoIndex: true,
 })
-export class HarvesterLog {
+export class Signal {
   @Prop({ type: mgSchema.Types.ObjectId, auto: true })
   _id?: string;
 
+  @Prop({ type: 'string' })
+  deviceId: string;
+
   @Prop({ type: 'number'  })
   totalItems: number;
-
-  @Prop()
-  strategy: string;
 
   //  Meta Field Is The Only Updatable Field In Timeseries
   @Prop({ type: 'string', enum: State, default: State.FETCHED })
   state: State;
 
   @Prop({ type: 'object' })
-  payload: any;
+  payload: Array<[
+    time: number,
+    [latitude: number, longitude: number, speed: number]
+  ]>;
 
-  @Prop({ type: 'date' , default: new Date() })
-  createdAt?: Date;
+  @Prop({ type: 'date' , default: Date.now })
+  createdAt: Date;
 }
 
-export const HarvesterLogSchema = SchemaFactory.createForClass(HarvesterLog);
-export const HarvesterLogModel = {
-  name: HarvesterLog.name,
-  schema: HarvesterLogSchema,
+export const SignalSchema = SchemaFactory.createForClass(Signal);
+export const SignalModel = {
+  name: Signal.name,
+  schema: SignalSchema,
 };
 
 @Injectable()
-export class HarvesterLogRepository extends MongoRepo<HarvesterLog> {
+export class SignalRepository extends MongoRepo<Signal> {
   constructor(
-    @InjectModel(HarvesterLog.name)
-    readonly HarvesterLogModel: Model<HarvesterLogDocument>,
+    @InjectModel(Signal.name)
+    readonly SignalModel: Model<SignalDocument>,
   ) {
-    super(HarvesterLogModel);
+    super(SignalModel);
   }
 }

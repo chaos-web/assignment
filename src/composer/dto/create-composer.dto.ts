@@ -1,14 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
-export class CreateHarvesterDto {
+export class CreateComposerDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
   name: string;
 }
 
-export class UpdateHarvesterDto {
+export class UpdateComposerDto {
   @ApiProperty()
   @IsOptional()
   @IsString()

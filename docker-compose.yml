@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   auth:
-    container_name: offer-service
+    container_name: signal-service
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,8 +12,8 @@ services:
     env_file:
       - ../.env
     environment:
-      - VIRTUAL_HOST=offer.localhost, offer.staging.mydomain.com
-      - LETSENCRYPT_HOST=offer.localhost, offer.staging.mydomain.com
+      - VIRTUAL_HOST=signal.localhost, signal.staging.mydomain.com
+      - LETSENCRYPT_HOST=signal.localhost, signal.staging.mydomain.com
     healthcheck:
       test: curl --fail http://127.0.0.1/api/health || exit 1
       interval: 60s

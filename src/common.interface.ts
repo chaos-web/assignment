@@ -16,13 +16,8 @@ export const ServiceEventsRabbitAddress = {
   exchange: 'Service-Events',
   type: 'topic',
   routingkeys:{
-    harvester: {
-        newData:"harvester.new-data",
+    composer: {
+        newData:"composer.new-data",
     },
-    product:{
-        created:"product.created",
-        updated:"product.updated",
-        deleted:"product.deleted"
-    }
   },
 };
